@@ -1,0 +1,25 @@
+{
+  "name": "lorcanmcdonald.com",
+  "version": "1.0.0",
+  "description": "![Screenshot of lorcanmcdonald.com on 14th July 2015](https://github.com/lorcanmcdonald/lorcanmcdonald.com/blob/master/design/Lorcan%20McDonald%20-%20Principal%20Software%20Developer%20Safari%2C%20Today%20at%2021.28.23.png)",
+  "main": "bin/index.js",
+  "bin": {
+    "lorcanmcdonald.com": "elm.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lorcanmcdonald/lorcanmcdonald.com.git"
+  },
+  "author": "Lorcan McDonald <lorcan@lorcanmcdonald.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lorcanmcdonald/lorcanmcdonald.com/issues"
+  },
+  "homepage": "https://github.com/lorcanmcdonald/lorcanmcdonald.com#readme",
+  "dependencies": {
+    "elm": "^0.18.0"
+  }
+}
