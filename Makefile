@@ -19,8 +19,8 @@ bin/font/: bin $(wildcard src/font/*)
 	mkdir -p bin/font
 	cp $(wildcard src/font/*) bin/font
 
-bin/index.js : bin src/main.elm
-	./node_modules/.bin/elm make --output bin/index.js src/main.elm
+bin/index.js : bin src/Main.elm
+	./node_modules/.bin/elm make --output bin/index.js src/Main.elm
 
 bin/index.html : bin src/index.html
 	cp src/index.html bin/

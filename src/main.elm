@@ -1,20 +1,23 @@
+import Browser
+import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (id, style, class, href, src, target)
 import Html.Events exposing (onClick)
-import String exposing (startsWith)
+import Json.Decode as Decode exposing (Value)
 import Markdown
+import String exposing (startsWith)
 
 type alias Model = Int
 
 -- UPDATE
 
-type Action = Increment | Decrement
+type Msg = Increment | Decrement
 
 type Url = ExternalUrl String | AnchorLink String | LocalUrl String
 toUrl : String -> Url
-toUrl s = if | startsWith "http" s -> ExternalUrl s
-             | startsWith "#" s -> AnchorLink s
-             | otherwise -> LocalUrl s
+toUrl s = if startsWith "http" s then ExternalUrl s
+          else if startsWith "#" s then AnchorLink s
+          else LocalUrl s
 
 fromUrl : Url -> String
 fromUrl u = case u of
@@ -28,7 +31,7 @@ type Company = Company String Url
 home = div [ class "content"]
            [ menu
            -- , banner
-           , title
+           , pageTitle
            , introduction
            , projects
            , copyright
@@ -39,10 +42,20 @@ home = div [ class "content"]
            , copyright
            ]
 
-copyright : Html
-copyright = article [class "small-print"] [Markdown.toHtml "**This document is covered by copyright. Modifications and derived works forbidden.**"]
+toHtml = Markdown.toHtmlWith
+  { githubFlavored = Just { tables = False, breaks = False }
+  , defaultHighlighting = Nothing
+  , sanitize = False
+  , smartypants = False
+  }
 
-menu : Html
+
+copyright : Html Msg
+copyright = article
+  [class "small-print"]
+  [toHtml [] "**This document is covered by copyright. Modifications and derived works forbidden.**"]
+
+menu : Html Msg
 menu = nav []
            [ul []
                [
@@ -53,9 +66,9 @@ menu = nav []
                    menuLink (toUrl "http://twitter.com") "Twitter"
                ] ]
 
-introduction : Html
+introduction : Html Msg
 introduction = section [] [
-    article [] [ Markdown.toHtml """
+    article [] [ toHtml [] """
 I have a passion for identifying ways to improve efficiency in software
 development, especially through automation: if a computer can do it a computer
 should do it. This allows my teams to spend more time on producing insights
@@ -64,7 +77,7 @@ and innovation at scale.
 ♥︎ Haskell, the UNIX command line, Javascript, Docker, and ♡♥︎Vim.
 """ ] ]
 
-menuLink : Url -> String -> Html
+menuLink : Url -> String -> Html Msg
 menuLink url content = case url of
                        ExternalUrl u -> li [] [ a [ href u
                                                   , target "_blank"
@@ -73,46 +86,47 @@ menuLink url content = case url of
                        AnchorLink u -> li [] [ a [ href u ] [ text content ] ]
                        LocalUrl u -> li [] [ a [ href u ] [ text content ] ]
 
-banner : Html
+banner : Html Msg
 banner = header []
                 [ div [] [ text "_" ]
                 ]
-title : Html
-title = h1 [] [ em [] [ text "Lorcan"]
+pageTitle : Html Msg
+pageTitle = h1 [] [ em [] [ text "Lorcan"]
               , strong [] [ text "McDonald" ]
               ]
 
-projects : Html
+projects : Html Msg
 projects = section [ id "Projects" ]
                  [ h2 [] [ text "Projects" ]
                  , github "regexicon.com"
                      (ExternalUrl "https://github.com/lorcanmcdonald/RegexCandidates")
                      (Just (LocalUrl "images/regexicon.com.png"))
-                     (Markdown.toHtml """A common problem I've noticed when code reviewing regular expressions is
-not that they don't match intended pattern, but rather that they will match
-something unexpected. I wrote this web service to help identify these issues by
-showing a selection of strings that would match a given regex.
+                     (toHtml [] """A common problem I've noticed when code reviewing regular expressions is
+not that they don't match the intended pattern, but rather that they will match
+something unexpected. I wrote this web service to help non-expert regular
+expression authors identify these issues by showing a selection of strings that
+would match a given regex.
 
 You can try it out at [http://regexicon.com/](http://regexicon.com/)
 """ )
                  , github "mars" (toUrl "https://github.com/lorcanmcdonald/mars")
                      (Just (LocalUrl "images/mars-static.png"))
-                     (Markdown.toHtml """Mars is a REPL for exploring JSON
+                     (toHtml [] """Mars is a REPL for exploring JSON
 documents. It allows you to use familiar UNIX shell
-commands to explore and update. I've found it useful to
-get an overview of an unfamiliar API.
+commands to explore and update. It's very useful to get an overview of an unfamiliar API.
 
 It's written in Haskell using [Parsec](https://hackage.haskell.org/package/parsec) to parse the
 command line mini language.
 """ )
                  ]
 
-break : Html
-break = div [ style [("page-break-after", "always")]] []
+break : Html Msg
+break = div [ class "break" ] []
 
-work : Html
+work : Html Msg
 work = section []
                [ h2 [ id "WorkExperience" ] [ text "Work Experience" ]
+               , jetcom
                , melosity
                , serviceFrame
                , ibm
@@ -125,11 +139,11 @@ education = section []
                     , dcu
                     ]
 
-dcu : Html
+dcu : Html Msg
 dcu = position "BSc. Computer Applications (Software Engineering)"
                (Company "DCU" (ExternalUrl "http://www.computing.dcu.ie/"))
                (TimeSpan "Sept 1999 → May 2003")
-               (Markdown.toHtml """
+               (toHtml [] """
 Computer Applications is a four years honours degree covering practical aspects
 of software engineering and theoretical topics in computer science.
 
@@ -147,11 +161,11 @@ I also completed a six month work placement with Crannog Software, an company
 selling network monitoring software.
 """)
 
-ibm : Html
+ibm : Html Msg
 ibm = position "Staff Software Engineer"
                (Company "IBM" (toUrl "http://ibm.com"))
                (TimeSpan "Sept 2008 → May 2012")
-               (Markdown.toHtml """
+               (toHtml [] """
 As the technical lead on the XPages Mobile Controls project, I architected
 and implemented the mobile web experience for Domino XPages (a web framework
 for developing modern applications on Lotus Notes-Domino). The team size was
@@ -174,13 +188,55 @@ to allow unit testing of Server Side Javascript libraries in XPages.
 <a name="ibm-footnote1"></a>³ Topics included: Mobile Development, graphics programming using Quartz Mac OS X and the Vim text editor
 """)
 
-melosity : Html
+jetcom : Html Msg
+jetcom = position "Associate Director"
+  (Company "Jet.com" (toUrl "https://jet.com"))
+  (TimeSpan "Aug 2017 → Present")
+  (toHtml [] """
+Jet.com, a subsidiary of Walmart, is an E-Commerce site targeted at urban
+millennial customers. We build microservices using functional programming
+languages (F#) and event sourcing by default.
+
+I joined Jet to lead a small team working on [Associate Delivery](https://blog.walmart.com/innovation/20170601/serving-customers-in-new-ways-walmart-begins-testing-associate-delivery),
+a high impact last mile initiative for Walmart to reduce shipping costs. The team was
+initially going through a number of growing pains relating to leadership
+changes and technical debt incurred through tight deadlines. I was quickly able
+to steady the ship and move to a position where I was providing leadership for
+the wider Transportation organisation comprising multiple teams across both the
+Dublin (Ireland), and Hoboken (New Jersey), offices, and a number of remote
+contractors and a consultancy firm.
+
+The Transportation teams work on delivery and Last Mile problems for the Jet
+and Walmart organisations. As examples instance we: provide the delivery
+estimates shown to users, the cheapest shipping method that can achieve that
+estimate and, in the New York Metro Area, physically deliver packages to
+customers[¹](#jet-footnote1).
+
+I am responsible for day to day managment of the teams, including prioritising
+and scheduling work according to the business priorities. (Balanced against the
+need to achieve a high level of operational excellence as a Tier 1 team[²](#jet-footnote2).
+In addition I have a high level of involvement in the technical direction of
+the team, mentoring the Engineers in Functional programming and DevOps
+concepts, reviewing architectural choices in the wider organisation and
+monitoring and identifying issues and risks in the various
+microservices (especially as required to go into the Peak holiday shopping
+season).
+
+<a name="jet-footnote1"></a>¹ One of the teams is
+[Parcel](https://www.fromparcel.com). We can guarantee delivery within a three
+hour window chosen by the customer and will reduce that window in the coming
+months.
+
+<a name="jet-footnote2"></a>² A team involved in the live customer facing
+discovery and checkout process.
+""")
+melosity : Html Msg
 melosity = position "Chief Technical Officer"
                         (Company "Melosity" (toUrl "http://melosity.com"))
-                        (TimeSpan "Nov 2015 → Present")
-               (Markdown.toHtml """
-At Melosity we're changing the way that musicians
-collaborate together. We have built a way to record and arrange a music project
+                        (TimeSpan "Nov 2015 → Jul 2017")
+               (toHtml [] """
+At Melosity we were changing the way that musicians
+collaborate together. We built a way to record and arrange a music project
 directly in the browser between multiple contributers, in real time[¹](#melosity-footnote1).
 
 As the CTO of an early stage start up, my responsibilites were split between
@@ -198,7 +254,7 @@ tasks are reviewed and completed.
 
 As important as the product was the team. I instituted a agile development
 process based on [Kanban](https://en.wikipedia.org/wiki/Kanban_(development)).
-We hold regular retrospective meetings with all stakeholders to improve our
+We held regular retrospective meetings with all stakeholders to improve our
 throughput and to help non-technical team members to understand and contribute
 to the software development process. In addition I hold regular one-to-one
 meetings with the engineering team to make sure we are meeting their objectives
@@ -209,11 +265,11 @@ We need to process each frame of audio within approximately 6ms to ensure that
 a user's recording doesn't glitch.
 """)
 
-serviceFrame : Html
+serviceFrame : Html Msg
 serviceFrame = position "Principal Engineer"
                         (Company "ServiceFrame" (toUrl "http://serviceframe.com"))
                         (TimeSpan "May 2012 → Nov 2015")
-               (Markdown.toHtml """
+               (toHtml [] """
 ServiceFrame is a governance platform for outsourced relationships, typically
 (but not limited to) the Telecoms Managed Services sector. It allows executive
 users to monitor the Key Performance Indicators of a contractual relationship
@@ -258,11 +314,11 @@ style deployment.
 <a name="sf-footnote2"></a>² [Extract, Transform, Load](https://en.wikipedia.org/wiki/Extract,_transform,_load)
 """)
 
-deecal : Html
+deecal : Html Msg
 deecal = position "Senior Full Stack Developer"
                   (Company "Deecal International (later acquired by FirstData)" (toUrl "http://www.deecal.ie"))
                   (TimeSpan "Nov 2006 → Sept 2008")
-               (Markdown.toHtml """
+               (toHtml [] """
 At Deecal I worked on the main product d.cal. d.cal was an suite of
 applications for managing corporate credit cards. It allowed you to monitor
 real time transactions, handle expense claims and other common functions on
@@ -286,12 +342,12 @@ and [jQuery](https://jquery.com).
 Deecal International was acquired by FirstData in 2008.
 """)
 
-tradesports : Html
+tradesports : Html Msg
 tradesports = position "Software Developer"
                   (Company "Trade Exchange Network"
                     (toUrl "https://en.wikipedia.org/wiki/Intrade"))
                   (TimeSpan "Feb 2004 → Nov 2006")
-               (Markdown.toHtml """
+               (toHtml [] """
 Trade Exchange Network ran a number of prediction market products open to
 public customers and in-house for a number of private clients. The consumer
 sites included intrade.com, which catered primarily to financial and public
@@ -317,13 +373,13 @@ have taken weeks of work previously and was prone to mistakes.
 <a name="tradesports-footnote1"></a>⁴ Soft real time.
 """)
 
-github : String -> Url -> Maybe Url -> Html -> Html
+github : String -> Url -> Maybe Url -> Html Msg -> Html Msg
 github = project "fa fa-github"
 
-twitter : String -> Url -> Maybe Url -> Html -> Html
+twitter : String -> Url -> Maybe Url -> Html Msg -> Html Msg
 twitter = project "fa fa-twitter"
 
-project : String -> String -> Url -> Maybe Url -> Html -> Html
+project : String -> String -> Url -> Maybe Url -> Html Msg -> Html Msg
 project iconClass title url image content =
     let
         optionalImage = case image of
@@ -338,18 +394,18 @@ project iconClass title url image content =
         article [ ]
         <| List.foldr List.append [] [heading, optionalImage, [content] ]
 
-position : String -> Company -> TimeSpan -> Html -> Html
+position : String -> Company -> TimeSpan -> Html Msg -> Html Msg
 position title (Company companyName companyUrl) (TimeSpan when) about =
     let
         urlString = fromUrl companyUrl
     in
        article []
-       <| [ h3 [] [ text title ]
+       <| List.append [ h3 [] [ text title ]
           , h4 [] [a [ href urlString ] [ text companyName ] ]
           , span [class "timespan"] [ text when ]
-          ] `List.append` [ about ]
+          ] [ about ]
 
-update : Action -> Model -> Model
+update : Msg -> Model -> Model
 update action model =
     case action of
         Increment -> model + 1
@@ -357,29 +413,15 @@ update action model =
 
 -- VIEW
 
-view : Signal.Address Action -> Model -> Html
-view address model = home
+view : Model -> Html Msg
+view model = home
 
-countStyle : Attribute
-countStyle =
-  style
-    [ ("font-size", "20px")
-    , ("font-family", "monospace")
-    , ("display", "inline-block")
-    , ("width", "50px")
-    , ("text-align", "center")
-    ]
+init = 1
 
--- SIGNALS
-
-main : Signal Html
+main : Program () Model Msg
 main =
-  Signal.map (view actions.address) model
-
-model : Signal Model
-model =
-  Signal.foldp update 0 actions.signal
-
-actions : Signal.Mailbox Action
-actions =
-  Signal.mailbox Increment
+  Browser.sandbox
+    { init = init
+    , update = update
+    , view = view
+    }
