@@ -142,3 +142,7 @@ nav li {
       background: none;
     }
 }
+
+.break {
+  page-break-after: always;
+}
