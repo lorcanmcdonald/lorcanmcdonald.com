@@ -109,6 +109,7 @@ would match a given regex.
 
 You can try it out at [http://regexicon.com/](http://regexicon.com/)
 """ )
+                 , break
                  , github "mars" (toUrl "https://github.com/lorcanmcdonald/mars")
                      (Just (LocalUrl "images/mars-static.png"))
                      (toHtml [] """Mars is a REPL for exploring JSON
@@ -190,7 +191,7 @@ to allow unit testing of Server Side Javascript libraries in XPages.
 
 jetcom : Html Msg
 jetcom = position "Associate Director"
-  (Company "Jet.com" (toUrl "https://jet.com"))
+  (Company "Walmart.com" (toUrl "https://walmart.com"))
   (TimeSpan "Aug 2017 → Present")
   (toHtml [] """
 Jet.com, a subsidiary of Walmart, is an E-Commerce site targeted at urban
