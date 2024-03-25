@@ -33,13 +33,10 @@ home = div [ class "content"]
            -- , banner
            , pageTitle
            , introduction
-           , projects
-           , copyright
            , work
-           , copyright
+           , projects
            , break
            , education
-           , copyright
            ]
 
 toHtml = Markdown.toHtmlWith
@@ -127,6 +124,9 @@ break = div [ class "break" ] []
 work : Html Msg
 work = section []
                [ h2 [ id "WorkExperience" ] [ text "Work Experience" ]
+               , vectraai_director
+               , vectraai
+               , letsgetchecked
                , jetcom
                , melosity
                , serviceFrame
@@ -189,14 +189,96 @@ to allow unit testing of Server Side Javascript libraries in XPages.
 <a name="ibm-footnote1"></a>³ Topics included: Mobile Development, graphics programming using Quartz Mac OS X and the Vim text editor
 """)
 
+
+vectraai_director : Html Msg
+vectraai_director = position "Director of Engineering for Data Platform"
+  (Company "Vectra AI" (toUrl "https://vectra.ai"))
+  (TimeSpan "February 2022 → Present")
+  (toHtml [] """
+Vectra AI provides AI driven security threat detection services. The product
+offering spans on premise devices, to cloud native systems able to
+intelligently connect separate attacker behaviours into actionable alerts with
+an unheard ratio of signal to noise.
+
+The Data Platform group provides the infrastructure and tooling to allow teams
+in Vectra to build data processing applications based on the customer metadata
+ingested from our customers' physical networks and cloud computing accounts. We
+are three teams geographically spread between the US and Ireland sharing on
+call responsibilities.
+
+Since taking over the group we have converted our Detection algorithms, the core
+offering of the Vectra AI Platform, from a daily batch run to a close to
+realtime streaming system, a 100x improvement in delivery time but at 25% of
+the cost of the system it replaced. This platform is now being adopted by other
+systems in the company to enable similar improvements in performance and costs.
+""")
+
+
+vectraai : Html Msg
+vectraai = position "Technical Architect"
+  (Company "Vectra AI" (toUrl "https://vectra.ai"))
+  (TimeSpan "November 2020 → February 2022")
+  (toHtml [] """
+Vectra AI provides AI driven security threat detection services. The product
+offering spans on premise devices, to cloud native systems able to
+intelligently connect separate attacker behaviours into actionable alerts with
+an unheard ratio of signal to noise.
+
+As Technical Architect I was responsible for helping to guide the technical
+direction of the engineering function as it move from on-prem hardware devices
+to the cloud, with particular responsibilities for the interactive Search
+platform and cloud application security.
+
+The Search Platform surfaces the Gold Tier data lake, hosted in AWS, to
+application teams. As a new project this has involved working with Product,
+and the existing Frontend, and Backend teams, while also building a new team
+responsible for Search specifically. We're using Presto and Spark to query
+across multiple data sources, including Hive, MariaDB and Kafka.
+
+As we port one of our significant on premise appliances to the cloud, I've been
+heavily involved in reviewing designs and organisational processes to ensure
+that they will continue to work in this new context. I have particular
+responsibility for the security and infrastructure aspects of this move. This
+involves working with Engineering and IT within Vectra to prioritise potential
+issues, building automated verification of Kubernetes (EKS) and Terraform
+manifests and working with third party penetration testing firms to validate
+our resolutions.
+""")
+
+letsgetchecked : Html Msg
+letsgetchecked = position "Engineering Manager"
+  (Company "LetsGetChecked" (toUrl "https://letsgetchecked.com"))
+  (TimeSpan "January 2020 → May 2020")
+  (toHtml [] """
+
+LetsGetChecked offers a range of health tests which can be administered by a
+patient in their own home. The logistics of sending the samples to a lab,
+collecting and having the results interpreted by trained clinical staff was
+managed through our proprietary technology platform.
+
+At LetsGetChecked I lead six development teams and the QA
+function, totalling nearly thirty people. The development teams were responsible
+for a wide range of business problems, from the ecommerce storefront and
+customer facing mobile apps to integrating with various labs and manufacturing
+and shipping packages from LetsGetChecked to customers and from patients to
+labs. This is all delivered as a cloud hosted solution in AWS.
+
+In my time there, I was responsible for reorganising these teams to
+better fit the organisational structure of the company. This resolved problems
+with unclear or conflicting priorities, and helped to get focus on
+important areas of innovation which had previously been neglected. In particular
+this allowed me to guide the team to develop practices to managing a live cloud
+deployment.
+""")
+
 jetcom : Html Msg
 jetcom = position "Associate Director"
   (Company "Walmart.com" (toUrl "https://walmart.com"))
-  (TimeSpan "Aug 2017 → Present")
+  (TimeSpan "Aug 2017 → January 2020")
   (toHtml [] """
-Jet.com, a subsidiary of Walmart, is an E-Commerce site targeted at urban
-millennial customers. We build microservices using functional programming
-languages (F#) and event sourcing by default.
+Jet.com, a subsidiary of Walmart, was an E-Commerce site targeted at urban
+millennial customers. We built microservices in Azure using functional
+programming languages (F#) and event sourcing by default.
 
 I joined Jet to lead a small team working on [Associate Delivery](https://blog.walmart.com/innovation/20170601/serving-customers-in-new-ways-walmart-begins-testing-associate-delivery),
 a high impact last mile initiative for Walmart to reduce shipping costs. The team was
@@ -208,29 +290,35 @@ Dublin (Ireland), and Hoboken (New Jersey), offices, and a number of remote
 contractors and a consultancy firm.
 
 The Transportation teams work on delivery and Last Mile problems for the Jet
-and Walmart organisations. As examples instance we: provide the delivery
-estimates shown to users, the cheapest shipping method that can achieve that
-estimate and, in the New York Metro Area, physically deliver packages to
-customers[¹](#jet-footnote1).
+and Walmart organisations. My teams worked on: providing the delivery
+estimates shown to users, deriving the cheapest shipping method that can
+achieve that estimate and, in the New York Metro Area, physically deliver
+packages to customers[¹](#jet-footnote1).
 
-I am responsible for day to day managment of the teams, including prioritising
+I was responsible for day to day managment of the teams, including prioritising
 and scheduling work according to the business priorities. (Balanced against the
 need to achieve a high level of operational excellence as a Tier 1 team[²](#jet-footnote2).
-In addition I have a high level of involvement in the technical direction of
+In addition I had a high level of involvement in the technical direction of
 the team, mentoring the Engineers in Functional programming and DevOps
 concepts, reviewing architectural choices in the wider organisation and
 monitoring and identifying issues and risks in the various
 microservices (especially as required to go into the Peak holiday shopping
 season).
 
-<a name="jet-footnote1"></a>¹ One of the teams is
-[Parcel](https://www.fromparcel.com). We can guarantee delivery within a three
-hour window chosen by the customer and will reduce that window in the coming
-months.
+My leadership style helped to resolve a lot of tensions in a geographically
+dispersed team. I worked hard to advocate for time to deal with technical debt
+while ensuring that Product and business objectives were aligned. Several
+people at Director and VP level remarked that I took "the drama out of a high
+drama team"
+
+<a name="jet-footnote1"></a>¹ One of the teams was
+[Parcel](https://www.fromparcel.com). We could guarantee delivery within a three
+hour window chosen by the customer and worked to reduce that window.
 
 <a name="jet-footnote2"></a>² A team involved in the live customer facing
 discovery and checkout process.
 """)
+
 melosity : Html Msg
 melosity = position "Chief Technical Officer"
                         (Company "Melosity" (toUrl "http://melosity.com"))
@@ -244,9 +332,9 @@ As the CTO of an early stage start up, my responsibilites were split between
 between architecting the product and infrastructure of the product and scaling
 up the team. We launched to the public in September 2016.
 
-Melosity is primarily built using [React](https://facebook.github.io/react/),
+Melosity was primarily built using [React](https://facebook.github.io/react/),
 [Haskell](https://www.haskell.org) and [Postgres](https://www.postgresql.org)
-stack. We use the microservices design pattern to for continuous deployment and
+stack. We used a microservices design pattern to for continuous deployment and
 decoupling of unrelated processes. [Docker](https://www.docker.com),
 [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/details/) and
 [Terraform](https://www.terraform.io) allow us

@@ -4,4 +4,11 @@ IFS=$'\n\t'
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
-PATH="$PATH:$DIR/node_modules/.bin/" "$DIR/node_modules/.bin/elm" make "$DIR/src/Main.elm"
+# brew cask install docker
+brew install node || brew upgrade node
+
+pushd "$DIR"
+npm install
+popd
+
+# PATH="$DIR/node_modules/.bin/:$PATH" "$DIR/node_modules/.bin/elm" make "$DIR/src/Main.elm"

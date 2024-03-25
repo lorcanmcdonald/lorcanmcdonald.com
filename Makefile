@@ -1,6 +1,6 @@
 
-all: javascript html style images fonts
-	
+all: javascript html style images fonts docker
+
 javascript: bin/index.js
 
 html: bin/index.html
@@ -10,6 +10,9 @@ style: bin/style.css
 images: bin/images
 
 fonts : bin/font
+
+docker:
+	docker build -t lorcan/lorcanmcdonald.com -f containers/Dockerfile.build .
 
 bin/images: bin $(wildcard src/images/*)
 	mkdir -p bin/images

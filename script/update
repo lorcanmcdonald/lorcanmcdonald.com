@@ -7,4 +7,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 "$DIR/script/bootstrap"
 
 cd "$DIR"
-make
+PATH="$DIR/node_modules/.bin/:$PATH" make
