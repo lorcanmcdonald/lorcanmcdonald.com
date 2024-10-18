@@ -1,3 +1,2 @@
-FROM node:12.3-alpine
-COPY bin /opt/lorcan/
-RUN ls /opt/lorcan
+FROM nginx:stable-alpine3.20-perl
+COPY bin /usr/share/nginx/html

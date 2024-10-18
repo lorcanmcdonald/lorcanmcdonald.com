@@ -71,7 +71,8 @@ development, especially through automation: if a computer can do it a computer
 should do it. This allows my teams to spend more time on producing insights
 and innovation at scale.
 
-♥︎ Haskell, the UNIX command line, Javascript, Docker, and ♡♥︎Vim.
+Big fan of Haskell, the UNIX command line, Javascript, Docker, and
+especially Vim.
 """ ] ]
 
 menuLink : Url -> String -> Html Msg
@@ -107,15 +108,15 @@ would match a given regex.
 You can try it out at [http://regexicon.com/](http://regexicon.com/)
 """ )
                  , break
-                 , github "mars" (toUrl "https://github.com/lorcanmcdonald/mars")
-                     (Just (LocalUrl "images/mars-static.png"))
-                     (toHtml [] """Mars is a REPL for exploring JSON
-documents. It allows you to use familiar UNIX shell
-commands to explore and update. It's very useful to get an overview of an unfamiliar API.
-
-It's written in Haskell using [Parsec](https://hackage.haskell.org/package/parsec) to parse the
-command line mini language.
-""" )
+--                  , github "mars" (toUrl "https://github.com/lorcanmcdonald/mars")
+--                      (Just (LocalUrl "images/mars-static.png"))
+--                      (toHtml [] """Mars is a REPL for exploring JSON
+-- documents. It allows you to use familiar UNIX shell
+-- commands to explore and update. It's very useful to get an overview of an unfamiliar API.
+-- 
+-- It's written in Haskell using [Parsec](https://hackage.haskell.org/package/parsec) to parse the
+-- command line mini language.
+-- """ )
                  ]
 
 break : Html Msg
@@ -202,15 +203,29 @@ an unheard ratio of signal to noise.
 
 The Data Platform group provides the infrastructure and tooling to allow teams
 in Vectra to build data processing applications based on the customer metadata
-ingested from our customers' physical networks and cloud computing accounts. We
-are three teams geographically spread between the US and Ireland sharing on
+ingested from our customers' physical networks and cloud computing accounts.
+Our applications are primarily deployed in AWS.
+
+We are three teams geographically spread between the US and Ireland sharing on
 call responsibilities.
 
-Since taking over the group we have converted our Detection algorithms, the core
-offering of the Vectra AI Platform, from a daily batch run to a close to
-realtime streaming system, a 100x improvement in delivery time but at 25% of
-the cost of the system it replaced. This platform is now being adopted by other
-systems in the company to enable similar improvements in performance and costs.
+Since taking over the group we have converted our AI Detection algorithms, the
+core offering of the Vectra AI Platform, from a daily batch run to a close to
+realtime streaming system, a 100x improvement in processing time but at 25% of
+the cost of the system it replaced. This platform is now being adopted by
+other systems in the company to enable similar improvements in performance
+and costs.
+
+We were also able to improve our ability to deliver changes safely to
+production. Going from a monthly release cadence synchronised across both
+geographies to on demand releases two or three times a week.
+
+This was an important part of bringing the team to a much stronger practice of
+production operations. I took over the team during a number of ongoing outages.
+I introduced a practice of regular incident retrospectives to help build
+learnings from production issues, both within the team and across the
+engineering organisation.
+
 """)
 
 
@@ -302,8 +317,11 @@ In addition I had a high level of involvement in the technical direction of
 the team, mentoring the Engineers in Functional programming and DevOps
 concepts, reviewing architectural choices in the wider organisation and
 monitoring and identifying issues and risks in the various
-microservices (especially as required to go into the Peak holiday shopping
-season).
+microservices.
+
+During my tenure the team went from regular incidents every couple of
+weeks to _zero_ PagerDuty alerts in the entire two weeks around Black Friday
+2019.
 
 My leadership style helped to resolve a lot of tensions in a geographically
 dispersed team. I worked hard to advocate for time to deal with technical debt
